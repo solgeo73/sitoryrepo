@@ -30,7 +30,7 @@ int main() {
             max = num[i];
         }
     }
-    cout << "\n Сумма элементов: " << sum << "\n Максимальный элемент: " << max << endl;
+    cout << "\nСумма элементов: " << sum << "\nМаксимальный элемент: " << max << endl;
     insertionSort(num, 10);
     cout << "Отсортированный массив: ";
     for (int i = 0; i < 10; i++) {
@@ -40,4 +40,5 @@ int main() {
         }
     }
     return 0;
+
 }
