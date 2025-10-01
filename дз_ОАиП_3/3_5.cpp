@@ -1,11 +1,11 @@
 #include <iostream>
-#include <cfloat>
+#include <climits>
 using namespace std;
 
 int main() {
-    double a[10];
-    double mn = DBL_MAX;
-    double mx = DBL_MIN;
+    int a[10];
+    int mn = INT_MAX;
+    int mx = INT_MIN;
     int mn_i;
     int mx_i;
     for (int k=0; k < 10; k++) {
