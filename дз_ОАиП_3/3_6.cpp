@@ -14,7 +14,7 @@ int main() {
             mn = a[k];
             mn_i = k;
         }
-        else if (a[k] > mx) {
+        if (a[k] > mx) {
             mx = a[k];
             mx_i = k;
         }
