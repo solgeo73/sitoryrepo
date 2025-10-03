@@ -4,11 +4,8 @@ using namespace std;
 
 int main() {
     double a[4][2];
-    int x, y;
     for (int k=0; k < 4; k++) {
-        cin >> x >> y;
-        a[k][0] = x;
-        a[k][1] = y;
+        cin >> a[k][0] >> a[k][1];
     }
     bool f=0;
     for (int k=0; k < 4; k++) {
