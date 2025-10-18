@@ -1,2 +1,2 @@
 #!/bin/bash
-echo ps | wc -l
+ps | wc -l
