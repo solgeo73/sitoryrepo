@@ -3,9 +3,19 @@
 #include "classes.h"
 #include <iomanip>
 #include <limits>
+#include <fstream>
 
 using namespace std;
 using namespace pqxx;
+
+void logOperation(const string& operation) {
+    ofstream logFile("log.txt", ios::app);
+    if (logFile.is_open()) {
+        char buffer[80];
+        logFile << "[" << buffer << "] " << operation << endl;
+        logFile.close();
+    }
+}
 
 void addCategory() {
     string name;
@@ -16,10 +26,12 @@ void addCategory() {
         Category category(name);
         if (category.save(conn)) {
             cout << "Категория добавлена." << endl;
+            logOperation("Категория добавлена");
         }
     }
     else {
         cout << "Название не может быть пустым." << endl;
+        logOperation("Ошибка при создании категории");
     }
 }
 
@@ -59,11 +71,13 @@ void addDish() {
 
         if (check.empty()) {
             cerr << "Ошибка: Категория с ID " << categoryId << " не существует." << endl;
+            logOperation("Ошибка при создании блюда");
             return;
         }
     }
     catch (const exception& e) {
         cerr << "Ошибка: " << e.what() << endl;
+        logOperation("Ошибка при создании блюда");
         return;
     }
 
@@ -78,18 +92,21 @@ void addDish() {
         MainCourse dish(name, categoryId, price);
         if (dish.save(conn)) {
             cout << "Основное блюдо добавлено." << endl;
+            logOperation("Основное блюдо добавлено");
         }
     }
     else if (type == 2) {
         Dessert dish(name, categoryId, price);
         if (dish.save(conn)) {
             cout << "Десерт добавлен." << endl;
+            logOperation("Десерт добавлен");
         }
     }
     else {
         Dish dish(name, categoryId, price);
         if (dish.save(conn)) {
             cout << "Блюдо добавлено." << endl;
+            logOperation("Блюдо добавлено");
         }
     }
 }
@@ -109,19 +126,23 @@ void addOrder() {
         Order order(dishId, quantity);
         if (order.save(conn)) {
             cout << "Заказ добавлен." << endl;
+            logOperation("Заказ добавлен");
         }
     }
     else {
         cout << "Неверные данные." << endl;
+        logOperation("Ошибка при создании заказа");
     }
 }
 
 void viewAllDishes() {
     Dish::display(conn);
+    logOperation("Показ всех блюд");
 }
 
 void viewAllOrders() {
     Order::display(conn);
+    logOperation("Показ всех заказов");
 }
 
 void earningsByCategory() {
@@ -144,9 +165,11 @@ void earningsByCategory() {
                 << ", Выручка: " << row["earnings"].as<double>()
                 << " руб." << endl;
         }
+        logOperation("Показ выручки по категориям");
     }
     catch (const exception& e) {
         cerr << "Ошибка: " << e.what() << endl;
+        logOperation("Ошибка при показе выручки по категориям");
     }
 }
 
@@ -171,9 +194,11 @@ void topSellingDishes() {
                 << " - продано: " << row["total_quantity"].as<int>()
                 << " порций" << endl;
         }
+        logOperation("Показ топ-3 блюд");
     }
     catch (const exception& e) {
         cerr << "Ошибка: " << e.what() << endl;
+        logOperation("Ошибка при показе топ-3 блюд");
     }
 }
 
@@ -190,9 +215,11 @@ void averageOrderValue() {
                 << res[0]["avg_price"].as<double>()
                 << " руб." << endl;
         }
+        logOperation("Показ средней стоимости");
     }
     catch (const exception& e) {
         cerr << "Ошибка: " << e.what() << endl;
+        logOperation("Ошибка при показе средней стоимости");
     }
 }
 
@@ -214,13 +241,16 @@ void orderCountPerDish() {
             cout << "Блюдо: " << row["name"].c_str()
                 << ", Заказов: " << row["order_count"].as<int>() << endl;
         }
+        logOperation("Показ общего кол-ва заказов по блюду");
     }
     catch (const exception& e) {
         cerr << "Ошибка: " << e.what() << endl;
+        logOperation("Ошибка при показе общего кол-ва заказов по блюду");
     }
 }
 
 int main() {
+    setlocale(LC_ALL, "RU");
     try {
         string conninfo = "host=localhost port=5432 dbname=restaurant_db user=postgres";
 
@@ -254,6 +284,9 @@ int main() {
         cout << "9. Общее количество заказов по каждому блюду" << endl;
         cout << "0. Выход" << endl;
         cout << "Выберите действие: ";
+
+        int choice;
+        cin >> choice;
 
         switch (choice) {
         case 1:
