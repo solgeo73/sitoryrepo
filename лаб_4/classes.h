@@ -42,6 +42,8 @@ public:
     void setId(int newId) { id = newId; }
     void setName(const string& newName) { name = newName; }
 
+    bool save(pqxx::connection* conn);
+
     void display() const {
         cout << "Category ID: " << id << endl;
         cout << "Name: " << name << endl;
@@ -72,6 +74,8 @@ public:
     void setName(const string& newName) { name = newName; }
     void setPrice(double newPrice) { price = newPrice; }
     void setCategoryId(int newCategoryId) { categoryId = newCategoryId; }
+
+    bool save(pqxx::connection* conn);
 
     virtual void display() const {
         cout << "Dish ID: " << id << endl;
@@ -124,6 +128,8 @@ public:
     void setQuantity(int newQuantity) { quantity = newQuantity; }
     void setOrderDate(const string& date) { orderDate = date; }
     void setTotalPrice(double price) { totalPrice = price; }
+
+    bool save(pqxx::connection* conn);
 
     void display() const {
         cout << "Order ID: " << id << endl;
